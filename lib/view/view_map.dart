@@ -4,8 +4,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:osm_nominatim/osm_nominatim.dart';
 import 'package:provider/provider.dart';
 
-import 'controller/app_controller.dart';
-import 'domen/marker_image_cropper.dart';
+import '../controller/app_controller.dart';
+import '../domen/marker_image_cropper.dart';
 
 class ViewMap extends StatefulWidget {
   const ViewMap({Key? key}) : super(key: key);

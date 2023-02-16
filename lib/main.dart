@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:maps_lesson/controller/app_controller.dart';
-import 'package:maps_lesson/view_map.dart';
+import 'package:maps_lesson/view/view_map.dart';
 import 'package:provider/provider.dart';
+import 'package:yandex_mapkit/yandex_mapkit.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (BuildContext context)=>AppController())
       ],
       child: const MaterialApp(
-        home: ViewMap(),
+        home: YandexMap(),
       ),
     );
   }
