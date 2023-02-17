@@ -19,7 +19,7 @@ class AppRepo {
         "start": "${start.longitude},${start.latitude}",
         "end": "${end.longitude},${end.latitude}"
       };
-      var res = await dio.client(isRouting: true).get(
+      var res = await dio.client().get(
           "/v2/directions/driving-car", queryParameters: qData);
       return DrawRouting.fromJson(res.data);
     } on DioError catch (e) {

@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
 
 class DioService {
-  Dio client({String? token, bool isRouting = false}) {
+  Dio client({String? token}) {
     return Dio(BaseOptions(
-      baseUrl: "https://api.foodyman.org",
+      baseUrl: "https://api.openrouteservice.org",
       headers: {
         'Accept':
         'application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8',

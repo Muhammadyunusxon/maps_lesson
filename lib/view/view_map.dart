@@ -97,6 +97,7 @@ class _ViewMapState extends State<ViewMap> {
                   polylineId: const PolylineId("1"),
                   points: context.watch<AppController>().list,
                   color: Colors.red,
+                  width: 7
                 )
               },
               initialCameraPosition: const CameraPosition(

@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (BuildContext context)=>AppController())
       ],
       child: const MaterialApp(
-        home: YandexMap(),
+        home: ViewMap(),
       ),
     );
   }
