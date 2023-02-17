@@ -4,8 +4,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:osm_nominatim/osm_nominatim.dart';
 import 'package:provider/provider.dart';
 
-import '../controller/app_controller.dart';
-import '../domen/marker_image_cropper.dart';
+import '../../controller/app_controller.dart';
+import '../../domen/marker_image_cropper.dart';
+import '../utils/components/my_form_field.dart';
 
 class ViewMap extends StatefulWidget {
   const ViewMap({Key? key}) : super(key: key);
@@ -32,17 +33,17 @@ class _ViewMapState extends State<ViewMap> {
         120);
     setOfMarker.addAll({
       Marker(
-          markerId: const MarkerId("1"),
+          markerId: MarkerId("1"),
           draggable: true,
           consumeTapEvents: true,
           flat: true,
           icon: myMarker,
-          position: const LatLng(41.285416, 69.204007),
+          position: LatLng(41.285416, 69.204007),
           onTap: () {
             showDialog(
                 context: context,
                 builder: (context) {
-                  return const AlertDialog(
+                  return AlertDialog(
                     title: Text("1"),
                   );
                 });
@@ -52,17 +53,17 @@ class _ViewMapState extends State<ViewMap> {
             debugPrint("location: ${location.longitude}");
           }),
       Marker(
-          markerId: const MarkerId("2"),
+          markerId: MarkerId("2"),
           draggable: true,
           consumeTapEvents: true,
           flat: true,
           icon: myMarker2,
-          position: const LatLng(41.406254, 69.205696),
+          position: LatLng(41.406254, 69.205696),
           onTap: () {
             showDialog(
                 context: context,
                 builder: (context) {
-                  return const AlertDialog(
+                  return AlertDialog(
                     title: Text("2"),
                   );
                 });
@@ -94,13 +95,12 @@ class _ViewMapState extends State<ViewMap> {
               myLocationButtonEnabled: false,
               polylines: {
                 Polyline(
-                  polylineId: const PolylineId("1"),
+                  polylineId: PolylineId("1"),
                   points: context.watch<AppController>().list,
                   color: Colors.red,
-                  width: 7
                 )
               },
-              initialCameraPosition: const CameraPosition(
+              initialCameraPosition: CameraPosition(
                   target: LatLng(41.285416, 69.204007), zoom: 17),
               onMapCreated: (GoogleMapController controller) {
                 mapController = controller;
@@ -108,7 +108,7 @@ class _ViewMapState extends State<ViewMap> {
             ),
             SafeArea(
               child: Container(
-                margin: const EdgeInsets.only(top: 16, right: 24, left: 24),
+                margin: EdgeInsets.only(top: 16, right: 24, left: 24),
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(16),
@@ -116,66 +116,64 @@ class _ViewMapState extends State<ViewMap> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    TextFormField(
-                      onChanged: (s) {
+                    MyFormFiled(
+                      title: "Search",
+                      onChange: (s) async {
                         context.read<AppController>().search(s);
                       },
-                      decoration: const InputDecoration(
-                        hintText: "Search",
-                      ),
                     ),
                     (context.watch<AppController>().searchText?.isNotEmpty ??
-                            false)
+                        false)
                         ? FutureBuilder(
-                            future: Nominatim.searchByName(
-                              query: context.watch<AppController>().searchText,
-                              limit: 5,
-                              addressDetails: true,
-                              extraTags: true,
-                              nameDetails: true,
-                            ),
-                            builder: (context, value) {
-                              if (value.hasData) {
-                                return ListView.builder(
-                                    shrinkWrap: true,
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    itemCount: value.data?.length ?? 0,
-                                    itemBuilder: (context2, index) {
-                                      return GestureDetector(
-                                        onTap: () async {
-                                          FocusScope.of(context).unfocus();
-                                          context
-                                              .read<AppController>()
-                                              .search("");
-                                          position = await context
-                                              .read<AppController>()
-                                              .determinePosition();
-                                          place = value.data?[index];
-                                          mapController.animateCamera(
-                                            CameraUpdate.newCameraPosition(
-                                              CameraPosition(
-                                                  target: LatLng(
-                                                      position.latitude,
-                                                      position.longitude),
-                                                  zoom: 18),
-                                            ),
-                                          );
-                                        },
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(16.0),
-                                          child: Text(
-                                              value.data?[index].displayName ??
-                                                  ""),
+                        future: Nominatim.searchByName(
+                          query: context.watch<AppController>().searchText,
+                          limit: 5,
+                          addressDetails: true,
+                          extraTags: true,
+                          nameDetails: true,
+                        ),
+                        builder: (context, value) {
+                          if (value.hasData) {
+                            return ListView.builder(
+                                shrinkWrap: true,
+                                physics:
+                                const NeverScrollableScrollPhysics(),
+                                itemCount: value.data?.length ?? 0,
+                                itemBuilder: (context2, index) {
+                                  return GestureDetector(
+                                    onTap: () async {
+                                      FocusScope.of(context).unfocus();
+                                      context
+                                          .read<AppController>()
+                                          .search("");
+                                      position = await context
+                                          .read<AppController>()
+                                          .determinePosition();
+                                      place = value.data?[index];
+                                      mapController.animateCamera(
+                                        CameraUpdate.newCameraPosition(
+                                          CameraPosition(
+                                              target: LatLng(
+                                                  position.latitude,
+                                                  position.longitude),
+                                              zoom: 18),
                                         ),
                                       );
-                                    });
-                              } else if (value.hasError) {
-                                return Text(value.error.toString());
-                              } else {
-                                return const CircularProgressIndicator();
-                              }
-                            })
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(16.0),
+                                      child: Text(
+                                          value.data?[index].displayName ??
+                                              ""),
+                                    ),
+                                  );
+                                });
+                          } else if (value.hasError) {
+                            return Text(value.error.toString());
+                          } else {
+                            return const CircularProgressIndicator();
+                          }
+                        })
                         : const SizedBox.shrink()
                   ],
                 ),
@@ -191,7 +189,7 @@ class _ViewMapState extends State<ViewMap> {
               LatLng(position.latitude, position.longitude),
               LatLng(place?.lat ?? 0, place?.lon ?? 0));
           // Position position =
-          //     await context.read<AuthController>().determinePosition();
+          //     await context.read<AppController>().determinePosition();
           // mapController.animateCamera(
           //   CameraUpdate.newCameraPosition(
           //     CameraPosition(

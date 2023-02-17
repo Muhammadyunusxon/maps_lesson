@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:maps_lesson/controller/app_controller.dart';
-import 'package:maps_lesson/view/view_map.dart';
+import 'package:maps_lesson/view/pages/view_map.dart';
+import 'package:maps_lesson/view/pages/yandex_map_page.dart';
 import 'package:provider/provider.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 
@@ -18,8 +19,9 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (BuildContext context)=>AppController())
       ],
-      child: const MaterialApp(
-        home: ViewMap(),
+      child:  const MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: YandexMapPage(),
       ),
     );
   }
